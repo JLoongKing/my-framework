@@ -13,9 +13,12 @@ class Request(object):
         self.encoding = "UTF-8"
  
     def __getattr__(self, attr):
+
+        # 缓存到__attrs字典
         if(attr == "params" and "params" not in self.__attrs):
             fp = None
             if(self.method == "POST"):
+
                 content = self.winput.read(int(self.env.get("CONTENT_LENGTH","0")))
                 #fp = io.StringIO(content.decode(self.encoding))
                 fp = io.StringIO(urllib.parse.unquote(content.decode("ISO-8859-1"),encoding=self.encoding))
@@ -25,6 +28,7 @@ class Request(object):
             for key in self.fs.keys():
                 self.params[key] = self.fs[key].value
             self.__attrs["params"] = self.params
+            print(self.__attrs)
         return self.__attrs[attr]
  
 class Response(object):
@@ -41,7 +45,7 @@ class Response(object):
         """
         if(self._write is None):
             self._write = self.start_response("200 OK", [("Content-type","text/html;charset="+self.encoding)])
-        self._write(string.encode(self.encoding).decode("ISO-8859-1"))
+        self._write(string.encode(self.encoding))
  
     def redirect(self, url):
         """跳转"""
