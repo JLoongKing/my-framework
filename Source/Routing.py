@@ -16,9 +16,7 @@ class Routing(object):
     def __call__(self,environ,start_response):
         path = environ['PATH_INFO']
         if path in self.routes:
-            self.request=Request(environ)
-            self.response=Response(start_response)
-            # start_response('200 OK', [('Content-Type', 'text/html; charset=utf-8')])
+            start_response('200 OK', [('Content-Type', 'text/html; charset=utf-8')])
             return self.routes[path]()
         else:
             start_response('200 OK', [('Content-Type', 'text/html; charset=utf-8')])

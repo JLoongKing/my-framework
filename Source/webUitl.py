@@ -1,5 +1,4 @@
-import socketserver, re, cgi, io, urllib.parse
-from wsgiref.simple_server import WSGIServer
+import  cgi, io, urllib.parse
 
 class Request(object):
     """保存客户端请求信息"""
